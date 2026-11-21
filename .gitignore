@@ -1,0 +1,43 @@
+# Environment and caches (never committed)
+.venv/
+cache/
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+node_modules/
+frontend/dist/
+
+# Data: only data/README.md is tracked
+data/*
+!data/README.md
+
+# Images and large artefacts (shared as described in docs/DATA.md)
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.gif
+*.bmp
+*.npy
+*.faiss
+*.onnx
+*.pt
+*.pth
+*.zip
+*.parquet
+*.db
+*.sqlite
+*.sqlite3
+*.mp4
+*.mov
+
+# Exceptions: small figures and wireframes are tracked
+!docs/**/*.png
+!docs/**/*.jpg
+!report/**/*.png
+!report/**/*.jpg
+
+# The professor's assignment is not ours to publish
+Description_mini_projet*.pdf

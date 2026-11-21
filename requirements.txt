@@ -1,0 +1,15 @@
+# Package B (Data, API & Evaluation) - base dependencies.
+# Versions are pinned later with `pip freeze` once everything is installed and tested.
+fastapi
+uvicorn[standard]
+sqlalchemy
+python-multipart
+pillow
+numpy
+pandas
+scikit-learn
+matplotlib
+httpx
+pytest
+ruff
+python-dotenv

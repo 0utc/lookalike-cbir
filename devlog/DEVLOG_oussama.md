@@ -15,6 +15,13 @@
 ```
 
 ---
+### 2026-11-21 — @Oussama — B0 — Environment and GitHub repo
+**Goal:** Working dev environment on a 4 GB laptop and the shared GitHub repo with protected main.
+**Done:** Python 3.11.9 installed on O: (per-user, not on PATH). Repo `0utc/lookalike-cbir` cloned into project\lookalike-cbir. Skeleton, .gitignore, .env.example, scripts/env.ps1 (redirects pip/HF/torch/temp caches into cache\), venv and base requirements.txt (fastapi, uvicorn, sqlalchemy, pillow, numpy, pandas, scikit-learn, matplotlib, httpx, pytest, ruff) installed. Initial commit c6f595b. Ruleset protect-main active: PR required, 1 approval, no force push, no deletion. Direct push to main tested and rejected (GH013).
+**Findings / numbers:** C: free space went 11.8 GB to 8.7 GB during setup; cause is the Windows page file (5.1 GB allocated, ~3 GB used) under 4 GB RAM pressure, not our installs. Old pip cache on C: is ~158 MB.
+**Problems & fixes:** conda base shadowed python (3.13), so we used a separate Python 3.11.9 and a venv. GitHub Free does not enforce protection on private repos and the Student Pack is not available yet (no school ID), so the repo was made public.
+**Decisions:** Repo public. Assignment PDF never committed (git-ignored). Commit email is the GitHub noreply address, set per repo. Requirements are unpinned for now; pin with pip freeze later.
+**Next:** Bilal accepts the invitation and reviews this PR. Then kickoff session, B1 contracts, B2 tiny catalog within 3 days.
 
 ### 2026-11-19 — @Oussama — Kickoff — Scope and tasks agreed
 **Goal:** Fix what we build and who does what.

@@ -90,3 +90,4 @@ Owner: `__________`  ·  Total ≈ 99 h
 | 2026-11-19 | v0.1 initial draft | — |
 | 2026-11-19 | v0.2: removed portfolio-only work; all assignment optional extensions (§10, §3.3) kept and spread across both packages | — |
 | 2026-11-19 | v0.3: separate devlog files per person | Aissati Oussama, Afallah Bilal |
+| 2026-11-21 | v0.4: repo is public (branch protection needs it on the Free plan); the assignment PDF is NOT committed to the repo (kept outside, git-ignored) | Aissati Oussama (Afallah Bilal to acknowledge) |

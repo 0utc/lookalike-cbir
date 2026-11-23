@@ -29,11 +29,11 @@ Legend: ⬜ todo · 🟨 in progress · ✅ done · ⛔ blocked
 
 ## PACKAGE B — Aissati Oussama — Data, API & Evaluation
 *Only Oussama (and his Claude) edits this section.*
-Last updated: YYYY-MM-DD
+Last updated: 2026-11-21
 
 | Task | Description | Tag | Status | Branch / PR | Notes |
 |------|-------------|-----|--------|-------------|-------|
-| B0 | Environment + GitHub repo setup | core | ⬜ | | |
+| B0 | Environment + GitHub repo setup | core | 🟨 | b0/docs-update | |
 | B1 | DB schema + OpenAPI contracts | core | ⬜ | | |
 | B2a | Tiny catalog (500 products) | core | ⬜ | | due within 3 days of kickoff |
 | B2b | Full catalog + DB + data docs | core | ⬜ | | |
@@ -47,9 +47,9 @@ Last updated: YYYY-MM-DD
 | B8 | Report sections (B) | core | ⬜ | | |
 
 **Next 3 actions (B):**
-1.
-2.
-3.
+1. Bilal accepts invite; he reviews and approves the B0 PR
+2. Kickoff session with Bilal (read the three contracts plan together)
+3. Start B1: DB schema and OpenAPI contract
 
 **Blocked / waiting on A:** none
 
@@ -82,3 +82,5 @@ Last updated: YYYY-MM-DD
 
 ## Decisions log (short; details in DEVLOG.md)
 - 2026-11-19 — Scope v1.0 frozen; tasks agreed (A = Bilal, B = Oussama).
+- 2026-11-21 — Repo public; assignment PDF not committed; main protected (PR + 1 approval).
+

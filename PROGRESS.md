@@ -35,7 +35,7 @@ Last updated: 2026-11-24
 |------|-------------|-----|--------|-------------|-------|
 | B0 | Environment + GitHub repo setup | core | ✅ | PR #1 (merged) | |
 | B1 | DB schema + OpenAPI contracts | core | 🟨 | b1/contracts | drafts done, awaiting Bilal's review at kickoff |
-| B2a | Tiny catalog (500 products) | core | ⬜ | | due within 3 days of kickoff |
+| B2a | Tiny catalog (500 products) | core | 🟨 | | archives downloading; due within 3 days of kickoff |
 | B2b | Full catalog + DB + data docs | core | ⬜ | | |
 | B3a | API core endpoints on stub | core | ⬜ | | |
 | B3b | API on real engine | core | ⬜ | | |
@@ -47,9 +47,9 @@ Last updated: 2026-11-24
 | B8 | Report sections (B) | core | ⬜ | | |
 
 **Next 3 actions (B):**
-1. Kickoff session with Bilal; review both contract PRs; merge; tag contracts-v1 (M0)
-2. Tiny shared PR: TASKS.md status AGREED + owners + change-log acknowledgements
-3. B2a: verify ABO route and licence, category coverage, then 500-product tiny catalog (due 3 days after kickoff)
+1. Kickoff with Bilal; merge both contract PRs; tag contracts-v1 (M0)
+2. B2a: category/image-count script, then 500-product tiny catalog (branch b2/tiny-catalog)
+3. Tiny shared PR: TASKS.md AGREED + owners + change-log acknowledgements
 
 **Blocked / waiting on A:** none
 

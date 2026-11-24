@@ -15,6 +15,14 @@
 ```
 
 ---
+### 2026-11-24 — @Oussama — B2a prep — ABO licence and download route verified
+**Goal:** Verify the ABO source, licence and download route before building the tiny catalog.
+**Done:** Read the AWS Open Data registry page and the official ABO READMEs. Measured archive sizes with HTTP HEAD. Started downloading both archives to data\raw\.
+**Findings / numbers:** Licence is CC BY 4.0 since 2023 (the paper, blog and AWS Marketplace still say CC BY-NC). Attribution: Amazon.com for the data; Guillaumin, Dideriksen, Deng, Arora, Collins, Malik for the dataset. We must say what we changed. abo-listings.tar = 87,480,320 B; abo-images-small.tar (256 px) = 3,253,381,120 B (about 3 GiB). Listings are 16 gzip JSON-lines files with multilingual fields (item_name, brand, item_id).
+**Problems & fixes:** My earlier assumptions were wrong: SCOPE says non-commercial, and the GitHub Pages URL does not exist. The README recommends archives over per-image CDN URLs, so we use the archives.
+**Decisions:** Use the archives, stored on O: under data\raw\ only (never C:). Extract only the selected images from the tar. DATA.md must credit the source and list our changes (resize, category mapping, simulated prices).
+**Next:** Read the rest of the listings and images READMEs (category and image fields), write the B2a script (count products by category and image count), build the 500-product tiny catalog on branch b2/tiny-catalog.
+
 ### 2026-11-24 — @Oussama — B1 / M0 — Contract drafts and kickoff plan
 **Goal:** Draft the DB and OpenAPI contracts and plan the kickoff session with Bilal.
 **Done:** B0 closed (PR #1 merged, Bilal approved). Branch b1/contracts with docs/CONTRACT_DB.md (categories, products, product_images) and docs/openapi.yaml (catalog, text/image search, admin CRUD), validated with openapi-spec-validator. Kickoff agenda prepared.

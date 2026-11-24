@@ -29,12 +29,12 @@ Legend: ⬜ todo · 🟨 in progress · ✅ done · ⛔ blocked
 
 ## PACKAGE B — Aissati Oussama — Data, API & Evaluation
 *Only Oussama (and his Claude) edits this section.*
-Last updated: 2026-11-21
+Last updated: 2026-11-24
 
 | Task | Description | Tag | Status | Branch / PR | Notes |
 |------|-------------|-----|--------|-------------|-------|
-| B0 | Environment + GitHub repo setup | core | 🟨 | b0/docs-update | |
-| B1 | DB schema + OpenAPI contracts | core | ⬜ | | |
+| B0 | Environment + GitHub repo setup | core | ✅ | PR #1 (merged) | |
+| B1 | DB schema + OpenAPI contracts | core | 🟨 | b1/contracts | drafts done, awaiting Bilal's review at kickoff |
 | B2a | Tiny catalog (500 products) | core | ⬜ | | due within 3 days of kickoff |
 | B2b | Full catalog + DB + data docs | core | ⬜ | | |
 | B3a | API core endpoints on stub | core | ⬜ | | |
@@ -47,9 +47,9 @@ Last updated: 2026-11-21
 | B8 | Report sections (B) | core | ⬜ | | |
 
 **Next 3 actions (B):**
-1. Bilal accepts invite; he reviews and approves the B0 PR
-2. Kickoff session with Bilal (read the three contracts plan together)
-3. Start B1: DB schema and OpenAPI contract
+1. Kickoff session with Bilal; review both contract PRs; merge; tag contracts-v1 (M0)
+2. Tiny shared PR: TASKS.md status AGREED + owners + change-log acknowledgements
+3. B2a: verify ABO route and licence, category coverage, then 500-product tiny catalog (due 3 days after kickoff)
 
 **Blocked / waiting on A:** none
 

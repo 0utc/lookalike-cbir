@@ -1,0 +1,370 @@
+﻿openapi: 3.0.3
+info:
+  title: Lookalike API
+  version: 0.1.0
+  description: |
+    REST API of Lookalike (visual-first product search). DRAFT, frozen at M0.
+    Limits (server-side, never trust the browser): query images must be JPEG, PNG or WebP,
+    at most 5 MB, and must really decode as an image.
+    Prices and stock are simulated (see docs/DATA.md).
+servers:
+  - url: http://localhost:8000
+tags:
+  - name: catalog
+  - name: search
+  - name: admin
+paths:
+  /api/v1/health:
+    get:
+      summary: Liveness check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+                  catalog_size: { type: integer, example: 500 }
+  /api/v1/categories:
+    get:
+      tags: [catalog]
+      summary: List categories
+      responses:
+        '200':
+          description: All categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Category' }
+  /api/v1/products/suggestions:
+    get:
+      tags: [catalog]
+      summary: Random multi-category products for the home page
+      description: Different on every call unless `seed` is given. Covers several categories.
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 48, default: 24 }
+        - name: seed
+          in: query
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Suggested products
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Product' }
+        '503': { $ref: '#/components/responses/CatalogEmpty' }
+  /api/v1/products:
+    get:
+      tags: [catalog]
+      summary: List / filter products (paginated)
+      parameters:
+        - $ref: '#/components/parameters/Category'
+        - $ref: '#/components/parameters/MinPrice'
+        - $ref: '#/components/parameters/MaxPrice'
+        - $ref: '#/components/parameters/Brand'
+        - $ref: '#/components/parameters/InStock'
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: page_size
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 24 }
+      responses:
+        '200':
+          description: A page of products
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, total, page, page_size]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: '#/components/schemas/Product' }
+                  total: { type: integer }
+                  page: { type: integer }
+                  page_size: { type: integer }
+  /api/v1/products/{id}:
+    get:
+      tags: [catalog]
+      summary: Product detail
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '200':
+          description: The product
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Product' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/search/text:
+    get:
+      tags: [search]
+      summary: Text-only search
+      description: Keyword match on name/brand/description. Result `score` is null (no visual score).
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 200 }
+        - $ref: '#/components/parameters/Category'
+        - $ref: '#/components/parameters/MinPrice'
+        - $ref: '#/components/parameters/MaxPrice'
+        - $ref: '#/components/parameters/Brand'
+        - $ref: '#/components/parameters/InStock'
+        - $ref: '#/components/parameters/TopK'
+      responses:
+        '200': { $ref: '#/components/responses/SearchOk' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '503': { $ref: '#/components/responses/CatalogEmpty' }
+  /api/v1/search/image:
+    post:
+      tags: [search]
+      summary: Image search, optionally combined with text
+      description: |
+        Without `q`: pure image similarity. With `q`: the text filters candidates by keyword/category
+        first, then image similarity ranks them (v1 combination rule; may be refined after evaluation).
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [image]
+              properties:
+                image: { type: string, format: binary }
+                q: { type: string, maxLength: 200 }
+                category: { type: string, description: Category slug }
+                min_price: { type: number }
+                max_price: { type: number }
+                brand: { type: string }
+                in_stock: { type: boolean }
+                top_k: { type: integer, minimum: 1, maximum: 50, default: 20 }
+                model:
+                  type: string
+                  enum: [mobilenet_v2, dinov2_small]
+                  default: mobilenet_v2
+      responses:
+        '200': { $ref: '#/components/responses/SearchOk' }
+        '413': { $ref: '#/components/responses/FileTooLarge' }
+        '415': { $ref: '#/components/responses/UnsupportedType' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '503': { $ref: '#/components/responses/CatalogEmpty' }
+  /api/v1/admin/products:
+    post:
+      tags: [admin]
+      summary: Create a product (image required)
+      security: [{ AdminToken: [] }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: { $ref: '#/components/schemas/ProductCreateForm' }
+      responses:
+        '201':
+          description: Created (vector computed and indexed)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Product' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '413': { $ref: '#/components/responses/FileTooLarge' }
+        '415': { $ref: '#/components/responses/UnsupportedType' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+  /api/v1/admin/products/{id}:
+    put:
+      tags: [admin]
+      summary: Update a product (new image optional; vector recomputed if image changes)
+      security: [{ AdminToken: [] }]
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: { $ref: '#/components/schemas/ProductUpdateForm' }
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Product' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '413': { $ref: '#/components/responses/FileTooLarge' }
+        '415': { $ref: '#/components/responses/UnsupportedType' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+    delete:
+      tags: [admin]
+      summary: Delete a product (vector removed from the index)
+      security: [{ AdminToken: [] }]
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '204': { description: Deleted }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+components:
+  securitySchemes:
+    AdminToken:
+      type: apiKey
+      in: header
+      name: X-Admin-Token
+      description: Shared secret from .env. Minimal protection, no user accounts (out of scope).
+  parameters:
+    ProductId:
+      name: id
+      in: path
+      required: true
+      schema: { type: integer }
+    Category:
+      name: category
+      in: query
+      description: Category slug
+      schema: { type: string }
+    MinPrice:
+      name: min_price
+      in: query
+      schema: { type: number, minimum: 0 }
+    MaxPrice:
+      name: max_price
+      in: query
+      schema: { type: number, minimum: 0 }
+    Brand:
+      name: brand
+      in: query
+      schema: { type: string }
+    InStock:
+      name: in_stock
+      in: query
+      schema: { type: boolean }
+    TopK:
+      name: top_k
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 50, default: 20 }
+  schemas:
+    Category:
+      type: object
+      required: [id, slug, name_en, name_fr]
+      properties:
+        id: { type: integer }
+        slug: { type: string, example: chair }
+        name_en: { type: string, example: Chair }
+        name_fr: { type: string, example: Chaise }
+    Product:
+      type: object
+      required: [id, name, category, price, currency, in_stock, image_url]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        category: { $ref: '#/components/schemas/Category' }
+        brand: { type: string, nullable: true }
+        description: { type: string, nullable: true }
+        price: { type: number, example: 49.9, description: Simulated }
+        currency: { type: string, example: EUR }
+        stock_quantity: { type: integer }
+        in_stock: { type: boolean, description: stock_quantity > 0 }
+        image_url: { type: string, example: /images/ab/ab12cd34.jpg }
+    SearchResult:
+      type: object
+      required: [rank, product]
+      properties:
+        rank: { type: integer, minimum: 1 }
+        score:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 1
+          description: Cosine similarity (1 = identical). Null for text-only search.
+        product: { $ref: '#/components/schemas/Product' }
+    SearchResponse:
+      type: object
+      required: [results, no_relevant_result, total]
+      properties:
+        results:
+          type: array
+          description: Sorted from most to least similar. Empty if no_relevant_result.
+          items: { $ref: '#/components/schemas/SearchResult' }
+        no_relevant_result:
+          type: boolean
+          description: True when the best score is below the calibrated threshold (or nothing matched).
+        total: { type: integer }
+        model: { type: string, nullable: true }
+        threshold: { type: number, nullable: true }
+    ProductCreateForm:
+      type: object
+      required: [name, category, price, image]
+      properties:
+        name: { type: string }
+        category: { type: string, description: Category slug }
+        brand: { type: string }
+        description: { type: string }
+        price: { type: number, minimum: 0 }
+        stock_quantity: { type: integer, minimum: 0, default: 0 }
+        image: { type: string, format: binary }
+    ProductUpdateForm:
+      type: object
+      properties:
+        name: { type: string }
+        category: { type: string }
+        brand: { type: string }
+        description: { type: string }
+        price: { type: number, minimum: 0 }
+        stock_quantity: { type: integer, minimum: 0 }
+        image: { type: string, format: binary, description: "If present, the vector is recomputed." }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              enum: [invalid_file_type, file_too_large, invalid_image, validation_error,
+                     not_found, unauthorized, catalog_empty]
+            message: { type: string, description: "Human-readable, shown to the user" }
+            details: { type: object, nullable: true }
+  responses:
+    SearchOk:
+      description: Ranked results (possibly empty with no_relevant_result = true)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/SearchResponse' }
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Unauthorized:
+      description: Missing or wrong admin token
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    UnsupportedType:
+      description: File is not JPEG/PNG/WebP
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    FileTooLarge:
+      description: File larger than 5 MB
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    ValidationError:
+      description: Bad parameters, empty query, or file that does not decode as an image
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    CatalogEmpty:
+      description: Catalog or index is empty
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }

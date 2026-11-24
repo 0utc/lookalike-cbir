@@ -15,6 +15,14 @@
 ```
 
 ---
+### 2026-11-24 — @Oussama — B1 / M0 — Contract drafts and kickoff plan
+**Goal:** Draft the DB and OpenAPI contracts and plan the kickoff session with Bilal.
+**Done:** B0 closed (PR #1 merged, Bilal approved). Branch b1/contracts with docs/CONTRACT_DB.md (categories, products, product_images) and docs/openapi.yaml (catalog, text/image search, admin CRUD), validated with openapi-spec-validator. Kickoff agenda prepared.
+**Findings / numbers:** Setup facts for the report/README: Python 3.11.9 at O:\TechTools\Tools\Python311 (not on PATH); each new shell needs .venv activation then scripts\env.ps1.
+**Problems & fixes:** TASKS.md still says "package choice pending" and two change-log lines wait for Bilal's acknowledgement; to be fixed in one small shared PR after kickoff.
+**Decisions:** products.id is AUTOINCREMENT and is the key in ids.npy. SearchEngine returns (id, score) only; the API joins with the DB. One image-search endpoint with optional q (text filters, image ranks). Admin protected by a shared X-Admin-Token. Currency EUR is a placeholder. Prices and stock simulated. All still drafts until Bilal reviews.
+**Next:** Kickoff with Bilal, merge both contract PRs, tag contracts-v1 (M0). Then B2a: verify the ABO route and licence on the official page, count categories, build the 500-product tiny catalog within 3 days.
+
 ### 2026-11-21 — @Oussama — B0 — Environment and GitHub repo
 **Goal:** Working dev environment on a 4 GB laptop and the shared GitHub repo with protected main.
 **Done:** Python 3.11.9 installed on O: (per-user, not on PATH). Repo `0utc/lookalike-cbir` cloned into project\lookalike-cbir. Skeleton, .gitignore, .env.example, scripts/env.ps1 (redirects pip/HF/torch/temp caches into cache\), venv and base requirements.txt (fastapi, uvicorn, sqlalchemy, pillow, numpy, pandas, scikit-learn, matplotlib, httpx, pytest, ruff) installed. Initial commit c6f595b. Ruleset protect-main active: PR required, 1 approval, no force push, no deletion. Direct push to main tested and rejected (GH013).

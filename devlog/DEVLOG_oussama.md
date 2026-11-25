@@ -15,6 +15,22 @@
 ```
 
 ---
+### 2026-11-24 — @Oussama — B2a prep — ABO licence and download route verified
+**Goal:** Verify the ABO source, licence and download route before building the tiny catalog.
+**Done:** Read the AWS Open Data registry page and the official ABO READMEs. Measured archive sizes with HTTP HEAD. Started downloading both archives to data\raw\.
+**Findings / numbers:** Licence is CC BY 4.0 since 2023 (the paper, blog and AWS Marketplace still say CC BY-NC). Attribution: Amazon.com for the data; Guillaumin, Dideriksen, Deng, Arora, Collins, Malik for the dataset. We must say what we changed. abo-listings.tar = 87,480,320 B; abo-images-small.tar (256 px) = 3,253,381,120 B (about 3 GiB). Listings are 16 gzip JSON-lines files with multilingual fields (item_name, brand, item_id).
+**Problems & fixes:** My earlier assumptions were wrong: SCOPE says non-commercial, and the GitHub Pages URL does not exist. The README recommends archives over per-image CDN URLs, so we use the archives.
+**Decisions:** Use the archives, stored on O: under data\raw\ only (never C:). Extract only the selected images from the tar. DATA.md must credit the source and list our changes (resize, category mapping, simulated prices).
+**Next:** Read the rest of the listings and images READMEs (category and image fields), write the B2a script (count products by category and image count), build the 500-product tiny catalog on branch b2/tiny-catalog.
+
+### 2026-11-24 — @Oussama — B1 / M0 — Contract drafts and kickoff plan
+**Goal:** Draft the DB and OpenAPI contracts and plan the kickoff session with Bilal.
+**Done:** B0 closed (PR #1 merged, Bilal approved). Branch b1/contracts with docs/CONTRACT_DB.md (categories, products, product_images) and docs/openapi.yaml (catalog, text/image search, admin CRUD), validated with openapi-spec-validator. Kickoff agenda prepared.
+**Findings / numbers:** Setup facts for the report/README: Python 3.11.9 at O:\TechTools\Tools\Python311 (not on PATH); each new shell needs .venv activation then scripts\env.ps1.
+**Problems & fixes:** TASKS.md still says "package choice pending" and two change-log lines wait for Bilal's acknowledgement; to be fixed in one small shared PR after kickoff.
+**Decisions:** products.id is AUTOINCREMENT and is the key in ids.npy. SearchEngine returns (id, score) only; the API joins with the DB. One image-search endpoint with optional q (text filters, image ranks). Admin protected by a shared X-Admin-Token. Currency EUR is a placeholder. Prices and stock simulated. All still drafts until Bilal reviews.
+**Next:** Kickoff with Bilal, merge both contract PRs, tag contracts-v1 (M0). Then B2a: verify the ABO route and licence on the official page, count categories, build the 500-product tiny catalog within 3 days.
+
 ### 2026-11-21 — @Oussama — B0 — Environment and GitHub repo
 **Goal:** Working dev environment on a 4 GB laptop and the shared GitHub repo with protected main.
 **Done:** Python 3.11.9 installed on O: (per-user, not on PATH). Repo `0utc/lookalike-cbir` cloned into project\lookalike-cbir. Skeleton, .gitignore, .env.example, scripts/env.ps1 (redirects pip/HF/torch/temp caches into cache\), venv and base requirements.txt (fastapi, uvicorn, sqlalchemy, pillow, numpy, pandas, scikit-learn, matplotlib, httpx, pytest, ruff) installed. Initial commit c6f595b. Ruleset protect-main active: PR required, 1 approval, no force push, no deletion. Direct push to main tested and rejected (GH013).

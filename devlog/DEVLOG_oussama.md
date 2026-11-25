@@ -15,6 +15,14 @@
 ```
 
 ---
+### 2026-11-25 — @Oussama — B2a — Tiny catalog (500 products) built, merged and released
+**Goal:** Build a balanced 500-product catalog from ABO with >=2 images per product, SQLite per CONTRACT_DB.md, and share it with Bilal.
+**Done:** scripts/b2a_explore.py (stream listings, stats), scripts/b2a_build_tiny.py (seeded sample, image extraction, DB fill), scripts/pack_tiny.py, tests/test_tiny_catalog.py (4 passed). B1 contracts PR and tiny-catalog PR merged. Catalog zipped and published as GitHub Release data-tiny-v1. Added docs/DATA.md and SCOPE v1.2 (CC BY 4.0, amazon.com) in branch b2/data-doc.
+**Findings / numbers:** 147,702 listings in total. amazon.in = 76,433 listings, of which 64,609 (85%) are CELLULAR_PHONE_CASE, so unusable as a balanced base. amazon.com = 19,616 listings, 384 product_types, 8,927 candidates in our 12 categories. Catalog: 12 categories, 41-42 products each, 1419 images, all 256 px max side. Toys: about 15 toy-like listings on amazon.com (7 are VIDEO_GAME_ACCESSORIES), so there is no toys category. Electronics is only accessories (phone cases, wireless accessories, office electronics).
+**Problems & fixes:** Keyword buckets were misleading ("HAIR" matches CHAIR, "PHONE" matches phone cases), so the final mapping uses exact product_type values. images.csv.gz is a separate download (not in the image tar) and is needed for image_id -> path. docs/DATA.md had never been created, so it was added late.
+**Decisions:** Marketplace = amazon.com (item_id unique, so source_id = item_id stays; pooling marketplaces would need domain in the key). 12 fine-grained categories with fixed quotas; seed 42 for selection, seed 43 (SEED+1) for prices/stock. Grocery excluded (packaging photos). Toys gap and thin electronics documented; B2b decision (drop toys / check other marketplaces / supplement) still open. Rule agreed: Bilal's PR approval counts as acknowledgement of the changes described in the PR.
+**Next:** B5 wireframes (A5 depends on them), then B3a on the stub once A1 exists, then B2b. Kickoff session with Bilal and contract freeze (tag contracts-v1) still to do.
+
 ### 2026-11-24 — @Oussama — B2a prep — ABO licence and download route verified
 **Goal:** Verify the ABO source, licence and download route before building the tiny catalog.
 **Done:** Read the AWS Open Data registry page and the official ABO READMEs. Measured archive sizes with HTTP HEAD. Started downloading both archives to data\raw\.

@@ -6,7 +6,7 @@
 
 - Course: Python pour les sciences de données — mini-project "CBIR e-commerce" (2026/2027)
 - Team: Aissati Oussama, Afallah Bilal
-- Scope version: 1.1 — 2026-11-19
+- Scope version: 1.2 — 2026-11-25
 
 ---
 
@@ -85,7 +85,7 @@ Ours differs in:
 - Training or fine-tuning a model from scratch (only pretrained extractors; light fine-tuning is
   at most a could-have experiment).
 - Large-scale deployment (>100k products), GPUs in production, mobile native apps.
-- Using the ABO catalog commercially.
+- Commercial use of the ABO catalog (ABO is CC BY 4.0: attribution required; our use is academic/portfolio only).
 
 ## 5. Data
 
@@ -96,8 +96,7 @@ Ours differs in:
   This must be stated plainly in the app footer/README and in the report.
 - **Images:** ≤ 256 px thumbnails. **Never committed to Git.** Published as a downloadable artefact
   (Hugging Face Hub dataset repo or GitHub Release) and fetched by a `make data` script.
-- **Licence:** ABO is distributed for non-commercial use (to be re-verified from the official page and
-  quoted exactly in the README). Our project is academic/portfolio only.
+- **Licence:** ABO is distributed under CC BY 4.0 (attribution required; verified on the official ABO page). Attribution is included in the shared catalog artefact and must be repeated in the README and the report. Our project is academic/portfolio only.
 - **To verify in the first data task:** that categories matching the assignment's examples
   (fashion, home, electronics, beauty, toys) are sufficiently represented. If a category is too thin,
   document it and supplement it from another open dataset (recorded in the report's references).
@@ -218,3 +217,4 @@ has the benchmark table and screenshots; a tagged release exists.
 | 2026-11-16 | v0.2: added full report contents (M13), oral explainability (M14), references (M15), wireframes (M16), explicit screen-size tests (M12) after a line-by-line check against the assignment | — |
 | 2026-11-19 | v1.0: scope frozen after approval by both members | Aissati Oussama, Afallah Bilal |
 | 2026-11-19 | v1.1: open questions answered (deadline TBD, FastAPI final, hardware not recorded); no change of scope | Aissati Oussama (Afallah Bilal to acknowledge) |
+| 2026-11-25 | v1.2: licence corrected to CC BY 4.0 (ABO); marketplace fixed to amazon.com, so source_id = item_id. Wording and data-source fix, not a scope change. | Aissati Oussama (Bilal's approval of this PR = acknowledgement, also for v1.1 and TASKS v0.4) |

@@ -29,13 +29,13 @@ Legend: ⬜ todo · 🟨 in progress · ✅ done · ⛔ blocked
 
 ## PACKAGE B — Aissati Oussama — Data, API & Evaluation
 *Only Oussama (and his Claude) edits this section.*
-Last updated: 2026-11-24
+Last updated: 2026-11-25
 
 | Task | Description | Tag | Status | Branch / PR | Notes |
 |------|-------------|-----|--------|-------------|-------|
 | B0 | Environment + GitHub repo setup | core | ✅ | PR #1 (merged) | |
-| B1 | DB schema + OpenAPI contracts | core | 🟨 | b1/contracts | drafts done, awaiting Bilal's review at kickoff |
-| B2a | Tiny catalog (500 products) | core | 🟨 | | archives downloading; due within 3 days of kickoff |
+| B1 | DB schema + OpenAPI contracts | core | ✅ | PR #2 (merged) | contracts merged; freeze at kickoff (M0) |
+| B2a | Tiny catalog (500 products) | core | ✅ | b2/tiny-catalog (merged) | release data-tiny-v1; 500 products, 12 categories |
 | B2b | Full catalog + DB + data docs | core | ⬜ | | |
 | B3a | API core endpoints on stub | core | ⬜ | | |
 | B3b | API on real engine | core | ⬜ | | |
@@ -47,12 +47,12 @@ Last updated: 2026-11-24
 | B8 | Report sections (B) | core | ⬜ | | |
 
 **Next 3 actions (B):**
-1. Kickoff with Bilal; merge both contract PRs; tag contracts-v1 (M0)
-2. B2a: category/image-count script, then 500-product tiny catalog (branch b2/tiny-catalog)
-3. Tiny shared PR: TASKS.md AGREED + owners + change-log acknowledgements
+1. B5 wireframes (home, results, product page; desktop + mobile): A5 depends on them
+2. B3a API on the stub, once Bilal's A1 (stub engine) is on main
+3. Kickoff with Bilal, tag contracts-v1 (M0); then B2b full catalog (decide the toys gap first)
 
 **Blocked / waiting on A:** none
-
+A1 (stub engine + embedding contract) not on main yet; B3a needs it.
 ---
 
 ## PACKAGE A — Afallah Bilal — Retrieval & Interface

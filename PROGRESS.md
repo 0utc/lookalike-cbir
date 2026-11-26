@@ -57,11 +57,11 @@ Last updated: 2026-11-24
 
 ## PACKAGE A — Afallah Bilal — Retrieval & Interface
 *Only Bilal (and his Claude) edits this section.*
-Last updated: YYYY-MM-DD
+Last updated: 2026-11-26
 
 | Task | Description | Tag | Status | Branch / PR | Notes |
 |------|-------------|-----|--------|-------------|-------|
-| A1 | Retrieval contract + stub engine | core | ⬜ | | |
+| A1 | Retrieval contract + stub engine | a1/retrieval-contract | ✅ | | |
 | A2 | Feature extraction (MobileNetV2; DINOv2-S optional) | core+opt | ⬜ | | |
 | A3 | Retrieval core (+ similarity score, vector update) | core+opt | ⬜ | | |
 | A4 | CPU serving check | core | ⬜ | | |

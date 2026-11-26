@@ -15,3 +15,9 @@
 ```
 
 ---
+### 2026-11-26 — @Bilal — A1 — Contrat embeddings + stub
+**Goal:** Écrire le contrat des embeddings et un faux moteur pour débloquer l'API de B.
+**Done:** docs/CONTRACT_EMBEDDINGS.md, core/engine.py, core/stub_engine.py, tests/test_stub_engine.py (6 tests OK).
+**Problems & fixes:** fichier de test créé dans core/ au lieu de tests/, déplacé.
+**Decisions:** le moteur renvoie (id, score) seulement; l'API filtre en SQL puis passe candidate_ids.
+**Next:** A2 (extraction des vecteurs avec MobileNetV2, notebook Kaggle).
